@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>VIPO A STORE</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6a0dad;
+      --primary-dark: #50118c;
+      --white: #ffffff;
+      --gray: #f0f0f0;
+      --icon: #2c2c2c;
+      --dark-bg: #121212;
+      --dark-card: #1e1e1e;
+      --dark-text: #e0e0e0;
+      --logo-color: #ff0000;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', sans-serif;
+    }
+    body {
+      margin: 0;
+      background-color: #f9f9f9;
+      transition: background 0.3s;
+    }
+    body.dark-mode {
+      background-color: var(--dark-bg);
+      color: var(--dark-text);
+    }
+    header {
+      background-color: var(--white);
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .dark-mode header {
+      background-color: var(--dark-card);
+    }
+    .logo {
+      font-weight: bold;
+      font-size: 1.8rem;
+      color: var(--logo-color);
+      font-weight: 700;
+      text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+      letter-spacing: 1px;
+    }
+    .dark-mode .logo {
+      color: #ff3333;
+      text-shadow: 0 0 10px rgba(255, 51, 51, 0.8);
+    }
+    .menu-btn {
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--icon);
+    }
+    .dark-mode .menu-btn {
+      color: var(--dark-text);
+    }
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 300px;
+      height: 100%;
+      background-color: var(--white);
+      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+      transition: right 0.3s ease;
+      padding-top: 80px;
+      z-index: 1000;
+    }
+    .dark-mode .sidebar {
+      background-color: var(--dark-card);
+    }
+    .sidebar.active {
+      right: 0;
+    }
+    .sidebar a {
+      display: block;
+      padding: 15px 20px;
+      color: var(--icon);
+      text-decoration: none;
+      font-weight: 700;
+      border-bottom: 1px solid #eee;
+      transition: background 0.3s;
+    }
+    .dark-mode .sidebar a {
+      color: var(--dark-text);
+      border-bottom-color: #333;
+    }
+    .sidebar a:hover {
+      background: var(--gray);
+    }
+    .dark-mode .sidebar a:hover {
+      background: #333;
+    }
+    .sidebar .logout {
+      color: #f44336;
+    }
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+      display: none;
+    }
+    .dark-mode .overlay {
+      background: rgba(0,0,0,0.7);
+    }
+    .overlay.active {
+      display: block;
+    }
+    .important-section {
+      transition: box-shadow 0.2s ease;
+      border: 2px solid var(--primary);
+      background-color: var(--white);
+      color: #000;
+      margin: 1rem;
+      padding: 1rem;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+    .dark-mode .important-section {
+      background-color: var(--dark-card);
+      color: var(--dark-text);
+    }
+    .fields {
+      margin: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .field {
+      transition: box-shadow 0.2s ease;
+      border: 1.5px solid #ccc;
+      border-radius: 10px;
+      padding: 12px 16px;
+      background-color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 80%;
+      margin: 0 auto;
+      font-weight: 700;
+    }
+    .dark-mode .field {
+      background-color: var(--dark-card);
+      color: var(--dark-text);
+      border-color: #555;
+    }
+    .field .coins {
+      color: #000;
+      font-weight: bold;
+    }
+    .dark-mode .field .coins {
+      color: gold;
+    }
+    .field.selected-product {
+      box-shadow: 0 0 10px rgba(106,13,173,0.6);
+      border-color: var(--primary);
+    }
+    .field:focus-within {
+      box-shadow: 0 0 8px rgba(186, 104, 200, 0.5);
+      border-color: rgba(186, 104, 200, 0.5);
+    }
+    #checkoutBtn {
+      display: block;
+      width: 80%;
+      margin: 30px auto;
+      padding: 12px;
+      font-size: 16px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background 0.3s;
+    }
+    #checkoutBtn:hover {
+      background-color: var(--primary-dark);
+    }
+    .dark-mode #checkoutBtn {
+      background-color: #7a1fa2;
+    }
+    #orderTableContainer {
+      width: 90%;
+      margin: 30px auto;
+      display: none;
+    }
+    .dark-mode #orderTableContainer h2 {
+      color: var(--dark-text);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      background-color: var(--white);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .dark-mode table {
+      background-color: var(--dark-card);
+      color: var(--dark-text);
+    }
+    th {
+      background-color: var(--primary);
+      color: white;
+      border: 1px solid #ccc;
+      padding: 12px;
+      font-weight: 700;
+    }
+    .dark-mode th {
+      background-color: #333;
+    }
+    td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+    input {
+      background-color: #fff;
+      border: 1.5px solid #ccc;
+      padding: 12px 16px;
+      border-radius: 10px;
+      width: 80%;
+      margin: 0 auto 20px auto;
+      display: block;
+      text-align: center;
+      font-weight: 700;
+    }
+    .dark-mode input {
+      background-color: #333;
+      color: var(--dark-text);
+      border-color: #555;
+    }
+    label {
+      display: block;
+      font-size: 18px;
+      margin: 0 auto 2px 10%;
+      color: #000;
+      font-weight: bold;
+      text-align: right;
+    }
+    .dark-mode label {
+      color: var(--dark-text);
+    }
+    .payment-method {
+      margin: 20px auto;
+      width: 80%;
+      text-align: center;
+    }
+    .payment-option {
+      display: inline-block;
+      margin: 10px;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+    .payment-option:hover {
+      transform: scale(1.05);
+    }
+    .my-cash {
+      background-color: #6a1b9a;
+      color: white;
+    }
+    .bank {
+      background-color: #c62828;
+      color: white;
+    }
+    .payment-details {
+      display: none;
+      width: 80%;
+      margin: 20px auto;
+      padding: 15px;
+      border-radius: 8px;
+      background-color: #f5f5f5;
+    }
+    .dark-mode .payment-details {
+      background-color: #333;
+    }
+    .image-upload {
+      width: 80%;
+      margin: 20px auto;
+    }
+    .image-upload label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .image-upload input {
+      width: 100%;
+      padding: 10px;
+      border: 1px dashed #ccc;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+    .dark-mode .image-upload input {
+      background-color: #333;
+      border-color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay" onclick="toggleSidebar()"></div>
+  <header>
+    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+    <div class="logo">𝑽𝑰𝑷𝑶 𝒂 𝒔𝒕𝒐𝒓𝒆</div>
+  </header>
+  <div class="sidebar" id="sidebar">
+    <a href="#" onclick="toggleDarkMode()">الوضع الليلي</a>
+  </div>
+  <div class="important-section">
+    <strong>🔔 مهم:</strong> ستعمل خدمة الشحن يومياً في الساعة 6 مساءً بتوقيت السودان.
+  </div>
+  <div class="fields" style="text-align: center; font-size: 18px; font-weight: bold; color: #000; margin: 30px auto 10px auto;">
+    <label style="display: block; font-size: 18px; margin: 0 auto 2px 10%; color: #000; font-weight: bold; text-align: right;">ID</label>
+    <input maxlength="13" oninput="if(this.value.length > 13) this.value = this.value.slice(0, 13);" type="number"/>
+    <div class="field"><span class="coins">2200ج.س</span> ماسة 110 💎</div>
+    <div class="field"><span class="coins">4400ج.س</span> ماسة 220 💎</div>
+    <div class="field"><span class="coins">7500ج.س</span> ماسة 330 💎</div>
+    <div class="field"><span class="coins">11K</span> ماسة 520 💎</div>
+    <div class="field"><span class="coins">22K</span> ماسة 1160 💎</div>
+    <div class="field"><span class="coins">50K</span> ماسة 2180 💎</div>
+    <div class="field"><span class="coins">4800ج.س</span> عضوية أسبوعية 📦</div>
+    <div class="field"><span class="coins">16K</span> عضوية شهرية 📦</div>
+  </div>
+
+  <div class="payment-method">
+    <div class="payment-option my-cash" onclick="showPaymentDetails('mycash')">ماي كاشي 🟣</div>
+    <div class="payment-option bank" onclick="showPaymentDetails('bank')">بنكك 🔴</div>
+  </div>
+
+  <div id="mycash-details" class="payment-details">
+    <p>رقم الحساب ماي كاشي : 796899</p>
+    <p>اسم الحساب : محمد عوض</p>
+  </div>
+
+  <div id="bank-details" class="payment-details">
+    <p>رقم الحساب : 4067472</p>
+    <p>اسم الحساب : مصعب عوض الكريم جبريل</p>
+  </div>
+
+  <div class="image-upload">
+    <label for="logo-image">جيب صوره لشعار:</label>
+    <input type="file" id="logo-image" accept="image/*">
+  </div>
+
+  <button id="checkoutBtn">إتمام عملية الشراء</button>
+  <div id="orderTableContainer">
+    <h2 style="text-align: center; font-size: 20px;">تفاصيل الطلب</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>الحالة</th>
+          <th>المنتج</th>
+          <th>الوقت</th>
+          <th>ID</th>
+        </tr>
+      </thead>
+      <tbody id="orderTableBody">
+      </tbody>
+    </table>
+  </div>
+  <script>
+    let selectedProduct = null;
+    let selectedImage = null;
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+      document.querySelector('.overlay').classList.toggle('active');
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+
+    function showPaymentDetails(type) {
+      document.getElementById('mycash-details').style.display = 'none';
+      document.getElementById('bank-details').style.display = 'none';
+      
+      if (type === 'mycash') {
+        document.getElementById('mycash-details').style.display = 'block';
+      } else if (type === 'bank') {
+        document.getElementById('bank-details').style.display = 'block';
+      }
+    }
+
+    function getCurrentTime() {
+      const now = new Date();
+      return now.toLocaleString('ar-EG', { hour12: false });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Handle image upload
+      const imageInput = document.getElementById('logo-image');
+      imageInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) {
+          selectedImage = e.target.files[0];
+        }
+      });
+
+      document.querySelectorAll('.field').forEach(field => {
+        field.addEventListener('click', () => {
+          document.querySelectorAll('.field').forEach(f => f.classList.remove('selected-product'));
+          field.classList.add('selected-product');
+          selectedProduct = field.innerText.trim();
+        });
+      });
+
+      const checkoutBtn = document.getElementById('checkoutBtn');
+      checkoutBtn.addEventListener('click', () => {
+        if (!selectedProduct) {
+          alert('اختر المنتج أولاً');
+          return;
+        }
+        const idInput = document.querySelector('input[type="number"]');
+        if (!idInput || !idInput.value.trim()) {
+          alert('أدخل ID الحساب');
+          return;
+        }
+        const playerID = idInput.value.trim();
+        const productParts = selectedProduct.split(' ');
+        const productName = productParts.slice(1).join(' ');
+        const productPrice = productParts[0];
+        
+        // Prepare WhatsApp message
+        let whatsappMessage = `DI : ${playerID}
+الكميه : ${productName}
+القروش : ${productPrice}`;
+        
+        // Add payment details based on which is visible
+        if (document.getElementById('mycash-details').style.display === 'block') {
+          whatsappMessage += `
+طريقة الدفع: ماي كاشي
+رقم الحساب: 796899
+اسم الحساب: محمد عوض`;
+        } else if (document.getElementById('bank-details').style.display === 'block') {
+          whatsappMessage += `
+طريقة الدفع: بنك
+رقم الحساب: 4067472
+اسم الحساب: مصعب عوض الكريم جبريل`;
+        }
+        
+        // If image is selected, we'll send it separately
+        const encodedMessage = encodeURIComponent(whatsappMessage);
+        const whatsappUrl = `https://wa.me/201278372252?text=${encodedMessage}`;
+        
+        // Open WhatsApp with the message
+        window.open(whatsappUrl, '_blank');
+        
+        // If image is selected, we can't send it directly via URL, so we'll just notify
+        if (selectedImage) {
+          alert('يرجى إرسال الصورة المرفقة بشكل منفصل عبر الواتساب');
+        }
+        
+        // Update order table
+        const orderTableContainer = document.getElementById('orderTableContainer');
+        const tbody = document.getElementById('orderTableBody');
+        const time = getCurrentTime();
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+          <td style="color: #f9a825; font-weight: bold;">⏳ قيد الانتظار</td>
+          <td>${selectedProduct}</td>
+          <td>${time}</td>
+          <td>${playerID}</td>
+        `;
+        tbody.appendChild(newRow);
+        orderTableContainer.style.display = 'block';
+      });
+    });
+  </script>
+</body>
+</html>
