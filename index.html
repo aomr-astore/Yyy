@@ -5,94 +5,117 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>VIP A STORE</title>
   <style>
+    :root {
+      --primary: #6a0dad;
+      --white: #ffffff;
+      --dark-bg: #121212;
+    }
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f9f9f9;
+      background-color: #f9f9f9;
     }
     header {
-      background: white;
+      background-color: var(--white);
       padding: 1rem;
-      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     .logo {
       font-size: 1.8rem;
-      color: red;
+      color: #ff0000;
       font-weight: bold;
       text-shadow: 0 0 10px rgba(255,0,0,0.7);
     }
-    .container {
+    .vipo-text {
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      font-size: 1.8rem;
+      margin: 0 10px;
+    }
+    .important-section {
+      border: 2px solid var(--primary);
+      background-color: var(--white);
+      margin: 1rem;
       padding: 1rem;
+      border-radius: 10px;
+      font-weight: bold;
     }
     .field {
-      border: 1px solid #ccc;
+      border: 1.5px solid #ccc;
       border-radius: 10px;
       padding: 12px;
+      background-color: #fff;
       margin: 10px auto;
       width: 80%;
       display: flex;
       justify-content: space-between;
       cursor: pointer;
-      transition: all 0.3s;
-      background: white;
+      transition: all 0.3s ease;
     }
     .field.selected {
-      border-color: red;
-      box-shadow: 0 0 0 2px red;
-      transform: scale(1.02);
-      animation: pulse 1s infinite;
-    }
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(255,0,0,0.4); }
-      70% { box-shadow: 0 0 0 10px rgba(255,0,0,0); }
-      100% { box-shadow: 0 0 0 0 rgba(255,0,0,0); }
+      background-color: var(--primary);
+      color: white;
+      border-color: var(--primary);
     }
     #checkoutBtn {
       display: block;
       width: 80%;
-      margin: 20px auto;
+      margin: 30px auto;
       padding: 12px;
-      background: #6a0dad;
+      background-color: var(--primary);
       color: white;
       border: none;
       border-radius: 8px;
       font-weight: bold;
       cursor: pointer;
     }
-    .notice {
+    .payment-details {
+      display: none;
       width: 80%;
       margin: 20px auto;
       padding: 15px;
-      background: red;
+      border-radius: 8px;
+      background-color: #f5f5f5;
+    }
+    .image-notice {
+      width: 80%;
+      margin: 20px auto;
+      padding: 15px;
+      background-color: #ff0000;
       color: white;
       text-align: center;
-      border-radius: 8px;
       font-weight: bold;
+      border-radius: 8px;
+      text-shadow: 0 0 5px white;
+      box-shadow: 0 0 10px rgba(255,0,0,0.7);
       animation: glow 1.5s infinite alternate;
     }
     @keyframes glow {
       from { box-shadow: 0 0 5px rgba(255,0,0,0.7); }
       to { box-shadow: 0 0 15px rgba(255,0,0,0.9); }
     }
-    input {
-      width: 80%;
-      padding: 10px;
-      margin: 10px auto;
-      display: block;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo">𝑽𝑰𝑷𝑶 𝒂 𝒔𝒕𝒐𝒓𝒆</div>
+    <div class="logo">VIP</div>
+    <div class="vipo-text">𝑽𝑰𝑷𝑶 𝒂 𝒔𝒕𝒐𝒓𝒆</div>
+    <div class="logo">A</div>
   </header>
 
-  <div class="container">
-    <input type="number" placeholder="أدخل ID الحساب" maxlength="13">
-    
+  <div class="important-section">
+    <strong>🔔 مهم:</strong> خدمة الشحن يومياً الساعة 6 مساءً بتوقيت السودان
+  </div>
+
+  <div style="margin: 30px auto 10px auto; text-align: center;">
+    <label style="display: block; margin-bottom: 5px; font-weight: bold;">ID</label>
+    <input type="number" maxlength="13" style="width: 80%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 20px;">
+  </div>
+
+  <div style="margin: 1rem;">
     <div class="field" onclick="selectProduct(this)"><span>2200ج.س</span> ماسة 110 💎</div>
     <div class="field" onclick="selectProduct(this)"><span>4400ج.س</span> ماسة 220 💎</div>
     <div class="field" onclick="selectProduct(this)"><span>7500ج.س</span> ماسة 330 💎</div>
@@ -101,41 +124,74 @@
     <div class="field" onclick="selectProduct(this)"><span>50K</span> ماسة 2180 💎</div>
     <div class="field" onclick="selectProduct(this)"><span>4800ج.س</span> عضوية أسبوعية 📦</div>
     <div class="field" onclick="selectProduct(this)"><span>16K</span> عضوية شهرية 📦</div>
-
-    <div class="notice">
-      ⚠️ يرجى إرسال الشعار بعد الطلب في الواتساب
-    </div>
-
-    <button id="checkoutBtn" onclick="checkout()">إتمام الشراء</button>
   </div>
+
+  <div style="text-align: center; margin: 20px 0;">
+    <button onclick="showPayment('mycash')" style="background: #6a1b9a; color: white; padding: 10px 20px; border: none; border-radius: 8px; margin: 0 5px; font-weight: bold;">ماي كاشي 🟣</button>
+    <button onclick="showPayment('bank')" style="background: #c62828; color: white; padding: 10px 20px; border: none; border-radius: 8px; margin: 0 5px; font-weight: bold;">بنكك 🔴</button>
+  </div>
+
+  <div id="mycash-details" class="payment-details">
+    <p>رقم الحساب: 796899</p>
+    <p>اسم الحساب: محمد عوض</p>
+  </div>
+
+  <div id="bank-details" class="payment-details">
+    <p>رقم الحساب: 4067472</p>
+    <p>اسم الحساب: مصعب عوض الكريم جبريل</p>
+  </div>
+
+  <div class="image-notice">
+    ⚠️ يرجى إرسال الشعار بعد الطلب في الواتساب. شكراً لك!
+  </div>
+
+  <button id="checkoutBtn">إتمام عملية الشراء</button>
 
   <script>
     let selectedProduct = null;
     
     function selectProduct(element) {
-      document.querySelectorAll('.field').forEach(f => f.classList.remove('selected'));
+      // Remove selected class from all products
+      document.querySelectorAll('.field').forEach(field => {
+        field.classList.remove('selected');
+      });
+      
+      // Add selected class to clicked product
       element.classList.add('selected');
-      selectedProduct = element.innerText;
+      selectedProduct = element.textContent.trim();
     }
     
-    function checkout() {
-      const id = document.querySelector('input').value;
-      if (!selectedProduct || !id) {
-        alert('الرجاء اختيار منتج وإدخال ID');
+    function showPayment(type) {
+      document.getElementById('mycash-details').style.display = 'none';
+      document.getElementById('bank-details').style.display = 'none';
+      document.getElementById(type + '-details').style.display = 'block';
+    }
+
+    document.getElementById('checkoutBtn').addEventListener('click', function() {
+      const idInput = document.querySelector('input[type="number"]');
+      if (!idInput.value) {
+        alert('أدخل ID الحساب');
         return;
       }
       
-      const product = selectedProduct.split(' ').slice(1).join(' ');
-      const price = selectedProduct.split(' ')[0];
-      const message = `طلب جديد:
-ID: ${id}
-المنتج: ${product}
-السعر: ${price}
+      if (!selectedProduct) {
+        alert('الرجاء اختيار منتج');
+        return;
+      }
 
-يرجى إرسال صورة الشعار`;
-      
+      let paymentDetails = '';
+      if (document.getElementById('mycash-details').style.display === 'block') {
+        paymentDetails = 'ماي كاشي - 796899 - محمد عوض';
+      } else if (document.getElementById('bank-details').style.display === 'block') {
+        paymentDetails = 'بنك - 4067472 - مصعب عوض الكريم جبريل';
+      } else {
+        alert('اختر طريقة الدفع');
+        return;
+      }
+
+      const message = `ID: ${idInput.value}\nالمنتج: ${selectedProduct}\nطريقة الدفع: ${paymentDetails}\n\nيرجى إرسال صورة الشعار الآن`;
       window.open(`https://wa.me/249119805326?text=${encodeURIComponent(message)}`, '_blank');
-    }
+    });
   </script>
 </body>
 </html>
