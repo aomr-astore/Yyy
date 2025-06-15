@@ -314,6 +314,15 @@
       background-color: #333;
       border-color: #555;
     }
+    #imagePreview {
+      max-width: 100%;
+      max-height: 200px;
+      margin-top: 10px;
+      display: none;
+    }
+    .preview-container {
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -359,6 +368,9 @@
   <div class="image-upload">
     <label for="logo-image">جيب صوره لشعار:</label>
     <input type="file" id="logo-image" accept="image/*">
+    <div class="preview-container">
+      <img id="imagePreview" alt="صورة الشعار">
+    </div>
   </div>
 
   <button id="checkoutBtn">إتمام عملية الشراء</button>
@@ -407,11 +419,21 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Handle image upload
+      // Handle image upload and preview
       const imageInput = document.getElementById('logo-image');
+      const imagePreview = document.getElementById('imagePreview');
+      
       imageInput.addEventListener('change', (e) => {
         if (e.target.files && e.target.files[0]) {
           selectedImage = e.target.files[0];
+          const reader = new FileReader();
+          
+          reader.onload = (event) => {
+            imagePreview.src = event.target.result;
+            imagePreview.style.display = 'block';
+          };
+          
+          reader.readAsDataURL(e.target.files[0]);
         }
       });
 
@@ -457,16 +479,18 @@
 اسم الحساب: مصعب عوض الكريم جبريل`;
         }
         
-        // If image is selected, we'll send it separately
+        // Create WhatsApp URL
         const encodedMessage = encodeURIComponent(whatsappMessage);
-        const whatsappUrl = `https://wa.me/201278372252?text=${encodedMessage}`;
+        let whatsappUrl = `https://wa.me/201278372252?text=${encodedMessage}`;
         
         // Open WhatsApp with the message
-        window.open(whatsappUrl, '_blank');
+        const whatsappWindow = window.open(whatsappUrl, '_blank');
         
-        // If image is selected, we can't send it directly via URL, so we'll just notify
+        // If image is selected, guide user to send it manually
         if (selectedImage) {
-          alert('يرجى إرسال الصورة المرفقة بشكل منفصل عبر الواتساب');
+          setTimeout(() => {
+            alert('الرجاء إرسال صورة الشعار الآن في نفس محادثة الواتساب');
+          }, 1000);
         }
         
         // Update order table
@@ -486,4 +510,4 @@
     });
   </script>
 </body>
-</html>
+  </html>
